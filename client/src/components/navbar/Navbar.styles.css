@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
+
+#navbar {
+  padding: 1rem;
+  align-items: center;
+}
+
+#navbar .navbar-brand a {
+  font-family: Sacramento, sans-serif;
+  font-size: 2.25rem;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+#navbar .navbar-brand a:hover,
+#navbar .navbar-brand a:focus {
+  color: var(--color-primary);
+}
+
+#navbar #signin-btn {
+  border: none;
+}
+
+#navbar #signup-btn {
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+}
+
+#navbar #signup-btn:hover {
+  filter: brightness(115%);
+}
+
+#navbar .button {
+  font-weight: 400;
+}
+
+#navbar .navbar-item a {
+  font-weight: 600;
+}
+
+#navbar .navbar-link span {
+  display: none;
+}
+
+#navbar .navbar-link {
+  display: flex;
+  align-items: center;
+}
+
+#navbar .navbar-link img {
+  height: 100%;
+  width: auto;
+  transform: scale(1.3);
+  border-radius: 50%;
+}
+
+#navbar .navbar-burger {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.navbar-link.is-active,
+.navbar-link:focus,
+.navbar-link:focus-within,
+.navbar-link:hover,
+a.navbar-item.is-active,
+a.navbar-item:focus,
+a.navbar-item:focus-within,
+a.navbar-item:hover {
+  color: var(--color-primary);
+}
+
+#navbar .navbar-burger:hover {
+  color: var(--color-primary);
+}
+
+#navbar .navbar-link:not(.is-arrowless)::after {
+  border-color: var(--color-primary);
+}
+
+@media (max-width: 1030px) {
+  #navbar .navbar-link img {
+    margin-left: 8px;
+  }
+  #navbar .navbar-link span {
+    display: inline-block;
+    margin-left: 20px;
+  }
+  #navbar .button {
+    margin-left: 20px;
+  }
+}

@@ -1,0 +1,29 @@
+#profile .tab-content .repo-cards {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+#profile .tab-content .repo-cards .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  border-radius: 10px;
+}
+
+#profile .tab-content .repo-cards .card a {
+  cursor: pointer;
+}
+
+#profile .tab-content .repo-cards .card:hover {
+  box-shadow: 0 1em 1.5em 1em rgba(10, 10, 10, 0.1),
+    0 0 0 1px rgba(10, 10, 10, 0.02);
+}
+
+@media screen and (max-width: 900px) {
+  #profile .tab-content .repo-cards {
+    padding: 1.5rem;
+  }
+}

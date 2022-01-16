@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+:root {
+  --color-primary: #ea4c89;
+  --color-dark: #444444;
+  --color-blue: #3a8bbb;
+  --color-purple: #c142a0;
+  --color-skyblue: #00b6e3;
+  --color-green: #66cc99;
+  --color-grey: #9da3a5;
+}
+
+.primary-text {
+  color: var(--color-primary);
+}
+.blue-text {
+  color: var(--color-blue);
+}
+.green-text {
+  color: var(--color-green);
+}
+.purple-text {
+  color: var(--color-purple);
+}
+.dark-text {
+  color: var(--color-dark);
+}
+.skyblue-text {
+  color: var(--color-skyblue);
+}
+
+.primary-bg {
+  background: var(--color-primary);
+  color: white;
+}
+.dark-bg {
+  background: var(--color-dark);
+  color: white;
+}
+.purple-bg {
+  background: var(--color-purple);
+  color: white;
+}
+
+.primary-bg:hover {
+  color: white;
+}
+
+.green-bg {
+  background: var(--color-green);
+  color: white;
+}
+
+.green-bg:hover {
+  color: white;
+}
+
+html {
+  overflow-y: auto;
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+}
+
+.full-height-spinner {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+#root > .container:not(.navbar) {
+  min-height: calc(100vh - 262px);
+}

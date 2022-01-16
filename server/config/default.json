@@ -1,0 +1,9 @@
+{
+    "MONGO_URI": "mongodb://test-user:test-password@nimblenotes-shard-00-00.mihom.mongodb.net:27017,nimblenotes-shard-00-01.mihom.mongodb.net:27017,nimblenotes-shard-00-02.mihom.mongodb.net:27017/NoteNimble?ssl=true&replicaSet=atlas-12r9m5-shard-0&authSource=admin&retryWrites=true&w=majority",
+    "JWT_SECRET": "secret",
+    "GITHUB_API_CLIENT_ID": "",
+    "GITHUB_API_CLIENT_SECRET": "",
+    "CLOUDINARY_CLOUD_NAME": "dps3fsm7c",
+    "CLOUDINARY_API_KEY": "283534755288584",
+    "CLOUDINARY_API_SECRET": "9zzbgApTLA93KNCv48UfkWJ3YTk"
+  }
