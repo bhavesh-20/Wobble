@@ -10,7 +10,8 @@
         "application/json"
     ],
     "consumes": [
-        "application/json"
+        "application/json",
+        "multipart/form-data"
     ],
     "securityDefinitions": {
         "Bearer": {
@@ -89,6 +90,44 @@
                     }
                 ]
             }
+        },
+        "/posts/": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Create post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post data",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                ]
+            }
         }
     },
     "definitions": {
@@ -100,6 +139,26 @@
                     "format": "email"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Post": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "websiteUrl": {
+                    "type": "string"
+                },
+                "repoUrl": {
+                    "type": "string"
+                },
+                "techTags": {
                     "type": "string"
                 }
             }
