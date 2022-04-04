@@ -91,6 +91,32 @@
             }
         },
         "/posts/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get all posts"
+                
+            },
             "post": {
                 "responses": {
                     "200": {
@@ -124,6 +150,275 @@
                         "schema": {
                             "$ref": "#/definitions/Post"
                         }
+                    }
+                ]
+            }
+        },
+        "/posts/feed": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get posts of following users"
+                
+            }
+        },
+        "/posts/{post_id}": {
+            "parameters": [
+                {
+                    "name": "post_id",
+                    "in": "path",
+                    "description": "Post ID",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Profile not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get Post ID",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Delete Profile",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/posts/user/{user_id}": {
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "in": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Profile not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get all posts by an user",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/posts/like/{post_id}": {
+            "parameters": [
+                {
+                    "name": "post_id",
+                    "in": "path",
+                    "description": "Post ID",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Like a Post",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/posts/unlike/{post_id}": {
+            "parameters": [
+                {
+                    "name": "post_id",
+                    "in": "path",
+                    "description": "Post ID",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Unlike a Post",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/posts/comment/{post_id}": {
+            "parameters": [
+                {
+                    "name": "post_id",
+                    "in": "path",
+                    "description": "Post ID",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Post a comment",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post data",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                ]
+            }
+        },
+        "/posts/comment/{post_id}/{comment_id}": {
+            "parameters": [
+                {
+                    "name": "post_id",
+                    "in": "path",
+                    "description": "Post ID",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "comment_id",
+                    "in": "path",
+                    "description": "Comment ID",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Delete a comment",
+                "security": [
+                    {
+                        "Bearer": []
                     }
                 ]
             }
@@ -391,6 +686,26 @@
                     "format": "email"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "Date"
+                },
+                "text": {
                     "type": "string"
                 }
             }
