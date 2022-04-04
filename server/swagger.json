@@ -60,6 +60,48 @@
                     }
                 ],
                 "summary": "Get Logged in user"
+            },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login user",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User credentials",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserCredentials"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "UserCredentials": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string"
+                }
             }
         }
     }
