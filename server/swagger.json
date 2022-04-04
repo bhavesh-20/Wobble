@@ -10,8 +10,7 @@
         "application/json"
     ],
     "consumes": [
-        "application/json",
-        "multipart/form-data"
+        "application/json"
     ],
     "securityDefinitions": {
         "Bearer": {
@@ -113,9 +112,6 @@
                     "posts"
                 ],
                 "summary": "Create post",
-                "consumes": [
-                    "multipart/form-data"
-                ],
                 "parameters": [
                     {
                         "in": "body",
@@ -124,6 +120,36 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/Post"
+                        }
+                    }
+                ]
+            }
+        },
+        "/users/": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "users"
+                ],
+                "summary": "Register User",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
                         }
                     }
                 ]
@@ -159,6 +185,21 @@
                     "type": "string"
                 },
                 "techTags": {
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
                     "type": "string"
                 }
             }
