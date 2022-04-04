@@ -6,8 +6,14 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+const swaggerUi = require('swagger-ui-express')
+swaggerDocument = require('./swagger.json');
+
 // Initialize middleware
 app.use(express.json());
+
+// Swagger UI
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Define routes
 app.use("/api/auth", require("./routes/api/auth"));

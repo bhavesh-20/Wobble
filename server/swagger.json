@@ -1,0 +1,66 @@
+{
+    "swagger": "2.0",
+    "basePath": "/api",
+    "info": {
+        "title": "Wobble API",
+        "version": "1.0",
+        "description": "Backend for Wobble - Social Media for developers"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "name": "auth",
+            "description": "authentication"
+        },
+        {
+            "name": "posts",
+            "description": "posts"
+        },
+        {
+            "name": "profile",
+            "description": "profile"
+        },
+        {
+            "name": "users",
+            "description": "users"
+        }
+    ],
+    "paths": {
+        "/auth/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get Logged in user"
+            }
+        }
+    }
+}
