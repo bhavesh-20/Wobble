@@ -8,7 +8,8 @@ const morgan = require('morgan')
 connectDB()
 
 const swaggerUi = require('swagger-ui-express')
-swaggerDocument = require('./swagger.json')
+const YAML = require('yamljs')
+swaggerDocument = YAML.load('./swagger.yaml')
 
 // Initialize middleware
 app.use(express.json())

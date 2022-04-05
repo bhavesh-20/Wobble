@@ -1,0 +1,600 @@
+openapi: 3.0.1
+info:
+  title: Wobble API
+  description: Backend for Wobble - Social Media for developers
+  version: '1.0'
+servers:
+  - url: /api
+tags:
+  - name: auth
+    description: authentication
+  - name: posts
+    description: posts
+  - name: profile
+    description: profile
+  - name: users
+    description: users
+paths:
+  /auth/:
+    get:
+      tags:
+        - auth
+      summary: Get Logged in user
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+    post:
+      tags:
+        - auth
+      summary: Login user
+      requestBody:
+        description: User credentials
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      x-codegen-request-body-name: body
+  /posts/:
+    get:
+      tags:
+        - posts
+      summary: Get all posts
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+    post:
+      tags:
+        - posts
+      summary: Create post
+      requestBody:
+        description: Post data
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Post title
+                  example: Swagger Post
+                description:
+                  type: string
+                  description: Post description
+                  example: This is a post created from Swagger
+                websiteUrl:
+                  type: string
+                  description: Post website url
+                  example: 'https://swagger.io'
+                repoUrl:
+                  type: string
+                  description: Post repo url
+                  example: 'https://github.com/bhavesh-20/wobble'
+                techTags:
+                  type: string
+                  description: Post tech tags
+                  example: 'swagger, nodejs'
+                postImage:
+                  type: array
+                  description: Post image
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - title
+                - description
+                - websiteUrl
+                - techTags
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+      x-codegen-request-body-name: body
+  /posts/feed:
+    get:
+      tags:
+        - posts
+      summary: Get posts of following users
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/posts/{post_id}':
+    get:
+      tags:
+        - posts
+      summary: Get Post ID
+      parameters:
+        - name: post_id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Profile not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+    delete:
+      tags:
+        - posts
+      summary: Delete Profile
+      parameters:
+        - name: post_id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/posts/user/{user_id}':
+    get:
+      tags:
+        - posts
+      summary: Get all posts by an user
+      parameters:
+        - name: user_id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Profile not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/posts/like/{post_id}':
+    put:
+      tags:
+        - posts
+      summary: Like a Post
+      parameters:
+        - name: post_id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/posts/unlike/{post_id}':
+    put:
+      tags:
+        - posts
+      summary: Unlike a Post
+      parameters:
+        - name: post_id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/posts/comment/{post_id}':
+    post:
+      tags:
+        - posts
+      summary: Post a comment
+      parameters:
+        - name: post_id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Post data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+      x-codegen-request-body-name: body
+  '/posts/comment/{post_id}/{comment_id}':
+    delete:
+      tags:
+        - posts
+      summary: Delete a comment
+      parameters:
+        - name: post_id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: string
+        - name: comment_id
+          in: path
+          description: Comment ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  /profile/:
+    get:
+      tags:
+        - profile
+      summary: Get all Profiles
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+    post:
+      tags:
+        - profile
+      summary: Profile Creation
+      requestBody:
+        description: Profile data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - profile
+      summary: Delete Profile
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  /profile/me:
+    get:
+      tags:
+        - profile
+      summary: Get logged in user's Profile
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Profile not found
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/profile/user/{user_id}':
+    get:
+      tags:
+        - profile
+      summary: Get Profile by User ID
+      parameters:
+        - name: user_id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Profile not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+  '/profile/github/{username}':
+    get:
+      tags:
+        - profile
+      summary: Get Github profile
+      parameters:
+        - name: username
+          in: path
+          description: Github Username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: No GitHub Profile
+          content: {}
+  '/profile/follow/{user_id}':
+    put:
+      tags:
+        - profile
+      summary: Follow User
+      parameters:
+        - name: user_id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  '/profile/unfollow/{user_id}':
+    put:
+      tags:
+        - profile
+      summary: Unfollow User
+      parameters:
+        - name: user_id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - Bearer: []
+  /users/:
+    post:
+      tags:
+        - users
+      summary: Register User
+      requestBody:
+        description: User details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content: {}
+        '401':
+          description: Not Authorized
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    UserCredentials:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    Comment:
+      type: object
+      properties:
+        name:
+          type: string
+        userID:
+          type: string
+        avatar:
+          type: string
+        text:
+          type: string
+    Post:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        websiteUrl:
+          type: string
+        repoUrl:
+          type: string
+        techTags:
+          type: string
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    Profile:
+      type: object
+      properties:
+        bio:
+          type: string
+        website:
+          type: string
+        location:
+          type: string
+        skills:
+          type: string
+        githubUsername:
+          type: string
+        twitter:
+          type: string
+        linkedin:
+          type: string
+        instagram:
+          type: string
+        codepen:
+          type: string
+        github:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
