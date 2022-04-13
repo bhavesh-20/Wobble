@@ -34,10 +34,3 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, '0.0.0.0', () => console.log(`Server started on port ${PORT}`))
-
-// ;(async function () {
-//   const redisClient = await require('./config/redis').getConnection()
-//   redisClient.get('key').then((data) => {
-//     console.log(data)
-//   })
-// })()

@@ -1,7 +1,8 @@
 const { createClient } = require('redis')
 
 const getConnection = async () => {
-  const client = createClient()
+  console.log('here')
+  const client = createClient({ socket: { port: 6379, host: 'redisdb' } })
 
   client.on('error', (err) => console.log('Redis Client Error', err))
 

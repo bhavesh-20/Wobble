@@ -172,10 +172,13 @@ router.get('/github/:username', async (req, res) => {
   try {
     const redisClient = await require('../../config/redis.js').getConnection()
     const redisKey = `github-${req.params.username}-profile`
-    const cachedResponse = await redisClient.get(redisKey)
+    let cachedResponse = await redisClient.get(redisKey)
     if (cachedResponse) {
       console.log(`using cache: github api | username: ${req.params.username}`)
-      return res.json({ ...JSON.parse(cachedResponse), cachedValue: true })
+      // console.log(cachedResponse)
+      cachedResponse = JSON.parse(cachedResponse)
+      // console.log(cachedResponse)
+      return res.json(cachedResponse)
     }
 
     const apiURI = encodeURI(

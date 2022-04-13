@@ -10,8 +10,8 @@ services:
     command: npm run server
     ports:
       - "5000:5000"
-    environment:
-      - NODE_ENV=production
+    depends_on:
+      - redisdb
     networks:
       - app-network
 
@@ -26,6 +26,15 @@ services:
       - server
     ports:
       - "3000:3000"
+    networks:
+      - app-network
+
+  redisdb:
+    image: 'redis:alpine'
+    restart: always
+    hostname: redisdb
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 
