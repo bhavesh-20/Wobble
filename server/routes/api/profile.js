@@ -1,30 +1,30 @@
-const express = require("express");
-const { check, validationResult } = require("express-validator");
-const config = require("config");
-const axios = require("axios");
-const router = express.Router();
+const express = require('express')
+const { check, validationResult } = require('express-validator')
+const config = require('config')
+const axios = require('axios')
+const router = express.Router()
 
-const auth = require("../../middleware/auth");
-const Profile = require("../../models/Profile");
-const User = require("../../models/User");
+const auth = require('../../middleware/auth')
+const Profile = require('../../models/Profile')
+const User = require('../../models/User')
 
 // @route:    POST /api/profile
 // @desc:     Create or update profile
 // @access:   Private
 router.post(
-  "/",
+  '/',
   [
     auth,
     [
-      check("bio", "Bio is required").not().isEmpty(),
-      check("skills", "Skills are required").not().isEmpty(),
+      check('bio', 'Bio is required').not().isEmpty(),
+      check('skills', 'Skills are required').not().isEmpty(),
     ],
   ],
   async (req, res) => {
     // Check for validation errors
-    const errors = validationResult(req);
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() })
     }
 
     // Build profile object
@@ -39,27 +39,27 @@ router.post(
       linkedin,
       codepen,
       github,
-    } = req.body;
+    } = req.body
 
-    const profileFields = {};
-    profileFields.user = req.user.id;
-    if (bio) profileFields.bio = bio;
-    if (website) profileFields.website = website;
-    if (location) profileFields.location = location;
-    if (githubUsername) profileFields.githubUsername = githubUsername;
+    const profileFields = {}
+    profileFields.user = req.user.id
+    if (bio) profileFields.bio = bio
+    if (website) profileFields.website = website
+    if (location) profileFields.location = location
+    if (githubUsername) profileFields.githubUsername = githubUsername
     if (skills) {
-      profileFields.skills = skills.split(",").map((skill) => skill.trim());
+      profileFields.skills = skills.split(',').map((skill) => skill.trim())
     }
 
-    profileFields.social = {};
-    if (twitter) profileFields.social.twitter = twitter;
-    if (instagram) profileFields.social.instagram = instagram;
-    if (linkedin) profileFields.social.linkedin = linkedin;
-    if (codepen) profileFields.social.codepen = codepen;
-    if (github) profileFields.social.github = github;
+    profileFields.social = {}
+    if (twitter) profileFields.social.twitter = twitter
+    if (instagram) profileFields.social.instagram = instagram
+    if (linkedin) profileFields.social.linkedin = linkedin
+    if (codepen) profileFields.social.codepen = codepen
+    if (github) profileFields.social.github = github
 
     try {
-      let profile = await Profile.findOne({ user: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id })
 
       // If profile already exists, update it
       if (profile) {
@@ -67,145 +67,152 @@ router.post(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
-        );
-        return res.json(profile);
+        )
+        return res.json(profile)
       }
 
       // If profile doesn't exist, make a new one
-      profile = new Profile(profileFields);
-      await profile.save();
-      return res.json(profile);
+      profile = new Profile(profileFields)
+      await profile.save()
+      return res.json(profile)
     } catch (err) {
-      console.error(err.message);
+      console.error(err.message)
       res
         .status(500)
-        .send("There was an issue with the server. Try again later.");
+        .send('There was an issue with the server. Try again later.')
     }
   }
-);
+)
 
 // @route:    GET api/profile/me
 // @desc:     Get current user's profile
 // @access:   Private
-router.get("/me", auth, async (req, res) => {
+router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
     })
-      .populate("user", ["name", "avatar"])
-      .populate("followers.user", ["name", "avatar"])
-      .populate("following.user", ["name", "avatar"]);
+      .populate('user', ['name', 'avatar'])
+      .populate('followers.user', ['name', 'avatar'])
+      .populate('following.user', ['name', 'avatar'])
 
     // If there's no profile
     if (!profile) {
-      return res.status(400).json({ msg: "There is no profile for this user" });
+      return res.status(400).json({ msg: 'There is no profile for this user' })
     }
 
-    return res.json(profile);
+    return res.json(profile)
   } catch {
-    console.error(err.message);
-    res
-      .status(500)
-      .send("There was an issue with the server. Try again later.");
+    console.error(err.message)
+    res.status(500).send('There was an issue with the server. Try again later.')
   }
-});
+})
 
 // @route:    GET /api/profile
 // @desc:     Get all profiles
 // @access:   Public
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const profiles = await Profile.find()
-      .populate("user", ["name", "avatar"])
-      .populate("followers.user", ["name", "avatar"])
-      .populate("following.user", ["name", "avatar"]);
-    res.json(profiles);
+      .populate('user', ['name', 'avatar'])
+      .populate('followers.user', ['name', 'avatar'])
+      .populate('following.user', ['name', 'avatar'])
+    res.json(profiles)
   } catch {
-    console.error(err.message);
-    res
-      .status(500)
-      .send("There was an issue with the server. Try again later.");
+    console.error(err.message)
+    res.status(500).send('There was an issue with the server. Try again later.')
   }
-});
+})
 
 // @route:    GET api/profile/user/:user_id
 // @desc:     Get profile by user ID
 // @access:   Public
-router.get("/user/:user_id", async (req, res) => {
+router.get('/user/:user_id', async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id,
     })
-      .populate("user", ["name", "avatar"])
-      .populate("followers.user", ["name", "avatar"])
-      .populate("following.user", ["name", "avatar"]);
+      .populate('user', ['name', 'avatar'])
+      .populate('followers.user', ['name', 'avatar'])
+      .populate('following.user', ['name', 'avatar'])
 
     // If there's no profile
     if (!profile) {
-      return res.status(400).json({ msg: "Profile not found" });
+      return res.status(400).json({ msg: 'Profile not found' })
     }
 
-    return res.json(profile);
+    return res.json(profile)
   } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(400).json({ msg: "Profile not found" });
+    console.error(err.message)
+    if (err.kind === 'ObjectId') {
+      return res.status(400).json({ msg: 'Profile not found' })
     }
-    res
-      .status(500)
-      .send("There was an issue with the server. Try again later.");
+    res.status(500).send('There was an issue with the server. Try again later.')
   }
-});
+})
 
 // @route:    DELETE api/profile
 // @desc:     Delete user and profile
 // @access:   Private
-router.delete("/", auth, async (req, res) => {
+router.delete('/', auth, async (req, res) => {
   try {
-    await Profile.findOneAndRemove({ user: req.user.id });
-    await User.findOneAndRemove({ _id: req.user.id });
-    res.json({ msg: "User deleted" });
+    await Profile.findOneAndRemove({ user: req.user.id })
+    await User.findOneAndRemove({ _id: req.user.id })
+    res.json({ msg: 'User deleted' })
   } catch (err) {
-    console.error(err.message);
-    res
-      .status(500)
-      .send("There was an issue with the server. Try again later.");
+    console.error(err.message)
+    res.status(500).send('There was an issue with the server. Try again later.')
   }
-});
+})
 
 // @route:    GET api/profile/github/:username
 // @desc:     Get latest GitHub repos
 // @access:   Public
-router.get("/github/:username", async (req, res) => {
+router.get('/github/:username', async (req, res) => {
   try {
+    const redisClient = await require('../../config/redis.js').getConnection()
+    const redisKey = `github-${req.params.username}-profile`
+    const cachedResponse = await redisClient.get(redisKey)
+    if (cachedResponse) {
+      console.log(`using cache: github api | username: ${req.params.username}`)
+      return res.json(JSON.parse(cachedResponse))
+    }
+
     const apiURI = encodeURI(
       `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
-    );
+    )
     const response = await axios.get(apiURI, {
-      "user-agent": "node.js",
-      Authorization: `token ${config.get("GITHUB_API_CLIENT_ID")}`,
-    });
-    return res.json(response.data);
+      'user-agent': 'node.js',
+      Authorization: `token ${config.get('GITHUB_API_CLIENT_ID')}`,
+    })
+
+    await redisClient.set(redisKey, JSON.stringify(response.data), {
+      EX: 3 * 60,
+      NX: true,
+    })
+    console.log('set cache')
+
+    return res.json(response.data)
   } catch (err) {
-    console.error(err.message);
-    res.status(400).json({ msg: "No GitHub profile" });
+    console.error(err.message)
+    res.status(400).json({ msg: 'No GitHub profile' })
   }
-});
+})
 
 // @route:    PUT api/profile/follow/:user_id
 // @desc:     Follow an user
 // @access:   Private
-router.put("/follow/:user_id", auth, async (req, res) => {
+router.put('/follow/:user_id', auth, async (req, res) => {
   try {
     // Check if user exists
-    const profile = await Profile.findOne({ user: req.params.user_id });
+    const profile = await Profile.findOne({ user: req.params.user_id })
     if (!profile) {
-      return res.status(404).json({ msg: "Profile not found" });
+      return res.status(404).json({ msg: 'Profile not found' })
     }
 
     // Check if user is trying to follow himself/herself
     if (req.params.user_id === req.user.id.toString()) {
-      return res.status(400).json({ msg: "You cannot follow yourself" });
+      return res.status(400).json({ msg: 'You cannot follow yourself' })
     }
 
     // Check if user is already following
@@ -216,7 +223,7 @@ router.put("/follow/:user_id", auth, async (req, res) => {
     ) {
       return res
         .status(400)
-        .json({ msg: "You are already following this user" });
+        .json({ msg: 'You are already following this user' })
     }
 
     // Otherwise, handle followers and following
@@ -225,41 +232,39 @@ router.put("/follow/:user_id", auth, async (req, res) => {
       {
         $push: { following: { user: req.params.user_id } },
       }
-    );
+    )
 
     await Profile.findOneAndUpdate(
       { user: req.params.user_id },
       {
         $push: { followers: { user: req.user.id } },
       }
-    );
+    )
 
-    res.json({ msg: "User followed" });
+    res.json({ msg: 'User followed' })
   } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(400).json({ msg: "User not found" });
+    console.error(err.message)
+    if (err.kind === 'ObjectId') {
+      return res.status(400).json({ msg: 'User not found' })
     }
-    res
-      .status(500)
-      .send("There was an issue with the server. Try again later.");
+    res.status(500).send('There was an issue with the server. Try again later.')
   }
-});
+})
 
 // @route:    PUT api/profile/unfollow/:user_id
 // @desc:     Unfollow an user
 // @access:   Private
-router.put("/unfollow/:user_id", auth, async (req, res) => {
+router.put('/unfollow/:user_id', auth, async (req, res) => {
   try {
     // Check if user exists
-    const profile = await Profile.findOne({ user: req.params.user_id });
+    const profile = await Profile.findOne({ user: req.params.user_id })
     if (!profile) {
-      return res.status(404).json({ msg: "User not found" });
+      return res.status(404).json({ msg: 'User not found' })
     }
 
     // Check if user is trying to follow himself/herself
     if (req.params.user_id === req.user.id.toString()) {
-      return res.status(400).json({ msg: "You cannot unfollow yourself" });
+      return res.status(400).json({ msg: 'You cannot unfollow yourself' })
     }
 
     // Check if user is following in the first place
@@ -268,7 +273,7 @@ router.put("/unfollow/:user_id", auth, async (req, res) => {
         (follower) => follower.user.toString() === req.user.id
       ).length === 0
     ) {
-      return res.status(400).json({ msg: "You are not following this user" });
+      return res.status(400).json({ msg: 'You are not following this user' })
     }
 
     // Otherwise, handle followers and following
@@ -277,24 +282,22 @@ router.put("/unfollow/:user_id", auth, async (req, res) => {
       {
         $pull: { following: { user: req.params.user_id } },
       }
-    );
+    )
 
     await Profile.findOneAndUpdate(
       { user: req.params.user_id },
       {
         $pull: { followers: { user: req.user.id } },
       }
-    );
-    res.json({ msg: "User unfollowed" });
+    )
+    res.json({ msg: 'User unfollowed' })
   } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(400).json({ msg: "User not found" });
+    console.error(err.message)
+    if (err.kind === 'ObjectId') {
+      return res.status(400).json({ msg: 'User not found' })
     }
-    res
-      .status(500)
-      .send("There was an issue with the server. Try again later.");
+    res.status(500).send('There was an issue with the server. Try again later.')
   }
-});
+})
 
-module.exports = router;
+module.exports = router
