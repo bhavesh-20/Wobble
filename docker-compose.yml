@@ -35,6 +35,8 @@ services:
     hostname: redisdb
     ports:
       - "6379:6379"
+    volumes:
+      - ./redis_data:/data
     networks:
       - app-network
 
