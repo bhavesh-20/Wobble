@@ -175,7 +175,7 @@ router.get('/github/:username', async (req, res) => {
     const cachedResponse = await redisClient.get(redisKey)
     if (cachedResponse) {
       console.log(`using cache: github api | username: ${req.params.username}`)
-      return res.json(JSON.parse(cachedResponse))
+      return res.json({ ...JSON.parse(cachedResponse), cachedValue: true })
     }
 
     const apiURI = encodeURI(
@@ -190,7 +190,7 @@ router.get('/github/:username', async (req, res) => {
       EX: 3 * 60,
       NX: true,
     })
-    console.log('set cache')
+    console.log(`set cache: github api | username: ${req.params.username}`)
 
     return res.json(response.data)
   } catch (err) {

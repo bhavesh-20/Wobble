@@ -1,0 +1,25 @@
+name: Deploy to VM Instance
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    name: Deploy to VM Instance
+    runs-on: ubuntu-latest
+    steps:
+    - name: ssh into machine, clone repo
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+                cd code
+                rm -rf lc-discord-notify
+                gh repo clone kaushik-rishi/lc-discord-notify
+                cd lc-discord-notify
+                yarn
+                pm2 delete ecosystem.config.js # will not err like pm2 delete stalk
+                pm2 start ecosystem.config.js --env production
