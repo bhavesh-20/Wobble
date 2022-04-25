@@ -5,6 +5,29 @@ on:
     branches: [master]
 
 jobs:
+  test:
+    name: testing code
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies & run tests
+        run: |
+          pwd
+          ls
+          ls ..
+          ls ../..
+          cd server
+          npm ci
+          npm test
   build:
     name: Deploy to VM Instance
     runs-on: ubuntu-latest
@@ -19,6 +42,7 @@ jobs:
         script: |
                 cd code/Wobble
                 git pull origin master
+                npm run test
                 sudo docker-compose down
                 sudo docker-compose up -d
                 sudo systemctl restart nginx
