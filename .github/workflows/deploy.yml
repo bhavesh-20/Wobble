@@ -1,4 +1,5 @@
 name: Deploy to VM Instance
+
 on:
   push:
     branches: [master]
@@ -16,10 +17,8 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-                cd code
-                rm -rf lc-discord-notify
-                gh repo clone kaushik-rishi/lc-discord-notify
-                cd lc-discord-notify
-                yarn
-                pm2 delete ecosystem.config.js # will not err like pm2 delete stalk
-                pm2 start ecosystem.config.js --env production
+                cd code/Wobble
+                git pull origin master
+                sudo docker-compose down
+                sudo docker-compose up -d
+                sudo systemctl restart nginx
